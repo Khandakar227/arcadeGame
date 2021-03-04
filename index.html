@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
+<html lang="en" dir="ltr"><head>
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Arcade Game</title>
-    <style media="screen">
+    <title>Arcade Game-Tennis</title>
+
+  <style media="screen">
     body{
       text-align: center;
     }
@@ -12,30 +12,32 @@
       margin: 0px auto;
       position: relative;
     }
-    .buttonDiv{text-align: center;float: left;}
-    #Slider{transform: rotate(-180deg);max-width:50px;height: 90vh;-webkit-appearance: slider-vertical; writing-mode: bt-lr;}
+	#forAndroid{display:none;}
+    #buttonDiv{text-align: center;float: left;}
+    #Slider{transform: rotate(-180deg);width:50px;height: 280px;-webkit-appearance: slider-vertical; writing-mode: bt-lr;}
     @media screen and (max-width:799px) {
-      canvas {
-        width: 100%;
-      }
+      canvas {width: 100%;}
+	  #forAndroid{display:block;}
     }
+
 @media (max-width: 799px) and (orientation:landscape) {
   canvas{
     width: 90%;
     height: 100vh;
   }
+  #forAndroid{display:none;}
 }
 
     </style>
   </head>
   <body style="margin: 0;">
-    <canvas id="canvas" width="800" height="600"  style="border: 1px solid;"></canvas>
-    <div class="buttonDiv">
+    <canvas id="canvas" width="800" height="600" style="border: 1px solid;"></canvas>
+    <div id="buttonDiv">
     <input type="range" min="0" max="600" value="250" class="slider" id="Slider" orient="vertical">
     </div>
-    <p><strong>Note:</strong> Try hitting ball with the edge of the paddle. Edge has the best, fast and diagonal hit. If any error occurs try reloading</p>
-    <h4>Flip the device to landscape mode for better gaming experience.</h4>
+    <h3 id="forAndroid">Flip the device to landscape mode for better gaming experience.</h3>
 <script type="text/javascript">
+
   var fixbug = 0; //fixbug
   var canvas;
   var canvasContext;
@@ -58,13 +60,16 @@
   var paddlePos;
 
   var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if(!isMobile){document.getElementById('buttonDiv').innerHTML = " ";}
 
   window.onload= function(){
     canvas = document.getElementById('canvas');
     canvasContext = canvas.getContext('2d');
     drawEverything();
-    drawRect(220,220,canvas.width-440,canvas.height-440,'white');
-    writeText('black',"17px Aria", "CLICK TO PLAY", 340, 310);
+    drawRect(120,120,canvas.width-240,canvas.height-240,'white');
+    writeText('black',"20px Aria", "CLICK TO PLAY", 340, 160);
+    writeText('black',"17px Aria", "Note: Try hitting ball with the edge of the paddle. Edge has the best, fast and", 130, 300);
+    writeText('black',"17px Aria", "diagonal hit. If any error occurs try reloading", 130, 320);
 
     canvas.addEventListener('mousedown', function(e){
       if (fixbug==0) {
@@ -239,4 +244,4 @@ function callBoth(){
 
 </script>
   </body>
-</html>
+  </html>

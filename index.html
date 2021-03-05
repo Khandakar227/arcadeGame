@@ -56,7 +56,7 @@
   var Accuracy = Math.floor((Math.random() * 25) + 30);
   var Swift = Math.floor((Math.random() * 6) + 11);
   var ShowWinScreen = false;
-  var Temp; //for resetting ball direction
+  var Temp = 10; //for resetting ball direction
   var paddlePos;
 
   var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -143,12 +143,14 @@ function callBoth(){
 
   function computerMovement(){
     paddle2Ycenter = paddle2Y + (PADDLE_HEIGHT/2);
+    if(ballX >300){
     if (paddle2Ycenter < ballY-Accuracy) {
       paddle2Y+= Swift;
     } else if (paddle2Ycenter > ballY+Accuracy) {
       paddle2Y-= Swift;
     }
   }
+}
 
   function drawRect(leftX, topY, width, height, arenaColor){
     canvasContext.fillStyle = arenaColor;
@@ -173,7 +175,7 @@ function callBoth(){
     ballX = ballX + ballSpeedX;
     ballY = ballY + ballSpeedY;
     if (ballX<9) {  // 9 is the radius of the ball
-      if (ballY >= paddle1Y-1 && ballY <= paddle1Y+1 + PADDLE_HEIGHT) { //for player
+      if (ballY >= paddle1Y-9 && ballY <= paddle1Y+9 + PADDLE_HEIGHT) { //for player
         ballSpeedX = -ballSpeedX;
         Temp = ballSpeedX;
         ballSpeedY = oneOrminusOne()*ballSpeedY;
@@ -186,7 +188,7 @@ function callBoth(){
       }
     }
     if(ballX>canvas.width-9){ //for computer
-      if (ballY >= paddle2Y-1 && ballY <= paddle2Y+1 + PADDLE_HEIGHT) {
+      if (ballY >= paddle2Y-9 && ballY <= paddle2Y+9 + PADDLE_HEIGHT) {
         ballSpeedX = -ballSpeedX;
         Temp = ballSpeedX;
         ballSpeedY = oneOrminusOne()*ballSpeedY;

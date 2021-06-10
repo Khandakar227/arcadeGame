@@ -5,37 +5,32 @@
     <title>Arcade Game-Tennis</title>
 
   <style media="screen">
+    html,body {
+        height: 100%;
+    }
     body{
       text-align: center;
+      display: grid;
+      align-items: center;
+      justify-content: center;
     }
     canvas{
-      margin: 0px auto;
+      width: 100%;
+      max-width: 800px;
       position: relative;
     }
-	#forAndroid{display:none;}
-    #buttonDiv{text-align: center;float: left;}
-    #Slider{transform: rotate(-180deg);width:50px;height: 280px;-webkit-appearance: slider-vertical; writing-mode: bt-lr;}
-    @media screen and (max-width:812px) {
-      canvas {width: 100%;}
-	  #forAndroid{display:block;}
+@media (max-width: 800px) and (orientation:portrait) {
+    canvas {
+      transform: rotateZ(90deg) translateY(17%);
+      width: 133%;
     }
-
-@media (max-width: 812px) and (orientation:landscape) {
-  canvas{
-    width: 90%;
-    height: 100vh;
-  }
-  #forAndroid{display:none;}
+}
 }
 
     </style>
   </head>
   <body style="margin: 0;">
     <canvas id="canvas" width="800" height="600" style="border: 1px solid;"></canvas>
-    <div id="buttonDiv">
-    <input type="range" min="0" max="600" value="250" class="slider" id="Slider" orient="vertical">
-    </div>
-    <h3 id="forAndroid">Flip the device to landscape mode for better gaming experience.</h3>
 <script type="text/javascript">
 
   var fixbug = 0; //fixbug
@@ -58,9 +53,7 @@
   var ShowWinScreen = false;
   var Temp = 10; //for resetting ball direction
   var paddlePos;
-
   var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  if(!isMobile){document.getElementById('buttonDiv').innerHTML = " ";}
 
   window.onload= function(){
     canvas = document.getElementById('canvas');
@@ -70,22 +63,24 @@
     writeText('black',"20px Aria", "CLICK TO PLAY", 340, 160);
     writeText('black',"17px Aria", "Note: Try hitting ball with the edge of the paddle. Edge has the best, fast and", 130, 300);
     writeText('black',"17px Aria", "diagonal hit. If any error occurs try reloading", 130, 320);
+    if(window.innerHeight>window.innerWidth) {
+        writeText('black',"22px Aria", "Rotate your device for better experience", 200, 360);
+    }
 
     canvas.addEventListener('mousedown', function(e){
       if (fixbug==0) {
         setInterval(callBoth, 1000/fps);
 
-        if (isMobile==false) {
           canvas.addEventListener('mousemove',function(e){
               var mousePos = calcMousePosition(e);
               paddle1Y = mousePos.y - (PADDLE_HEIGHT/2);
-
-          });
-        } else{
-          document.getElementById("Slider").oninput = function() {
-            paddlePos = this.value;
-            paddle1Y = paddlePos - (PADDLE_HEIGHT/2);
-          }
+          })
+        if (isMobile){
+                canvas.addEventListener('touchmove',function(e){
+                          var mousePos = calcTouchPosition(e);
+                          paddle1Y = mousePos.y - (PADDLE_HEIGHT/2);
+                          // console.log(e)
+                      })
         }
       }   fixbug =1;
 
@@ -236,6 +231,18 @@ function callBoth(){
     var root = document.documentElement;
     var mouseX = e.clientX - rect.left - root.scrollLeft;
     var mouseY = e.clientY - rect.top - root.scrollTop;
+
+    return {
+      x:mouseX,
+      y:mouseY
+    };
+  }
+
+  function calcTouchPosition(e){
+    var rect = canvas.getBoundingClientRect();
+    var root = document.documentElement;
+    var mouseX = e.targetTouches[0].clientX - rect.left - root.scrollLeft;
+    var mouseY = e.targetTouches[0].clientY - rect.top - root.scrollTop;
 
     return {
       x:mouseX,
